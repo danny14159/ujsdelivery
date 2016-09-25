@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+ <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <mapper namespace="com.express.travel.service.OrderService">
+  <insert id="insert" parameterType="Order">
+   insert into tb_order(userid,connection_methods,goods_id,total_price,status,create_time,guide_level,fare_level,ticket_level) 
+   values(#{userid},#{connection_methods},#{goods_id},#{total_price},#{status},#{create_time},#{guide_level},#{fare_level},#{ticket_level});
+  </insert>
+  <delete id="delete" parameterType="hashmap">
+   update tb_order set deleted='Y'
+   <where>
+    id=#{id}
+       </where>
+  </delete>
+  <update id="update" parameterType="hashmap">
+   update tb_order
+   <set>
+       </set>
+   <where>
+    id=#{id}
+       </where>
+  </update>
+  <select id="list" resultType="Order" parameterType="hashmap">
+   select * from tb_order
+   <where>
+       </where>
+  </select>
+  <select id="listByPage" resultType="Order" parameterType="hashmap">
+   select * from tb_order
+   <where>
+       </where>
+   limit #{offset},#{rows}
+  </select>
+  <select id="load" resultType="Order" parameterType="hashmap">
+   select * from tb_order
+   <where>
+       </where>
+   limit 0,1
+  </select>
+  <select id="count" resultType="int" parameterType="hashmap">
+   select count(*) from tb_order
+   <where>
+       </where>
+  </select>
+ </mapper>
+ 

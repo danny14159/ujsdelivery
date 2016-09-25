@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+ <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <mapper namespace="com.express.core.service.ReqRecordService">
+  <insert id="insert" parameterType="ReqRecord">
+   insert into tb_reqrecord(userid,req_url,params,target_ip,username,opt_time) values(#{userid},#{req_url},#{params},#{target_ip},#{username},#{opt_time});
+  </insert>
+  <delete id="delete" parameterType="hashmap">
+   update tb_reqrecord set deleted='Y'
+   <where>
+    =#{}
+       </where>
+  </delete>
+  <update id="update" parameterType="hashmap">
+   update tb_reqrecord
+   <set>
+       </set>
+   <where>
+    =#{}
+       </where>
+  </update>
+  <select id="list" resultType="ReqRecord" parameterType="hashmap">
+   select * from tb_reqrecord
+   <where>
+   <if test="key!=null">and (params like '%${key}%' or userid like '%${key}%' or req_url like '%${key}%' or username like '%${key}%')</if>
+       </where>
+    order by opt_time desc
+    limit 0,100
+  </select>
+  <select id="listByPage" resultType="ReqRecord" parameterType="hashmap">
+   select * from tb_reqrecord
+   <where>
+       </where>
+   limit #{offset},#{rows}
+  </select>
+  <select id="load" resultType="ReqRecord" parameterType="hashmap">
+   select * from tb_reqrecord
+   <where>
+       </where>
+   limit 0,1
+  </select>
+  <select id="count" resultType="int" parameterType="hashmap">
+   select count(*) from tb_reqrecord
+   <where>
+       </where>
+  </select>
+ </mapper>
+ 

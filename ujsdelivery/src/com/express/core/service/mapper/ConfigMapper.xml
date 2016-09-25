@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+ <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <mapper namespace="com.express.core.service.ConfigService">
+  <insert id="insert" parameterType="Config">
+   insert into tb_config(key,value,type) values(#{key},#{value},#{type});
+  </insert>
+  <delete id="delete" parameterType="hashmap">
+   update tb_config set deleted='Y'
+   <where>
+    id=#{id}
+       </where>
+  </delete>
+  <update id="update" parameterType="hashmap">
+   update tb_config
+   <set>
+       </set>
+   <where>
+    id=#{id}
+       </where>
+  </update>
+  <select id="list" resultType="Config" parameterType="hashmap">
+   select * from tb_config
+   <where>
+         <if test="key!=null">and key=#{ key }</if>
+         <if test="type!=null">and type=#{ type }</if>
+       </where>
+  </select>
+  <select id="listByPage" resultType="Config" parameterType="hashmap">
+   select * from tb_config
+   <where>
+         <if test="key!=null">and key=#{ key }</if>
+         <if test="type!=null">and type=#{ type }</if>
+       </where>
+   limit #{offset},#{rows}
+  </select>
+  <select id="load" resultType="Config" parameterType="hashmap">
+   select * from tb_config
+   <where>
+         <if test="key!=null">and key=#{ key }</if>
+         <if test="type!=null">and type=#{ type }</if>
+       </where>
+   limit 0,1
+  </select>
+  <select id="count" resultType="int" parameterType="hashmap">
+   select count(1) from tb_config
+   <where>
+         <if test="key!=null">and key = #{ key }</if>
+         <if test="type!=null">and type = #{ type }</if>
+       </where>
+  </select>
+ </mapper>
+ 

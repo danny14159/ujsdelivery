@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+ <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <mapper namespace="com.express.travel.service.RegionService">
+  <insert id="insert" parameterType="Region">
+   insert into tb_region(name) values(#{name});
+  </insert>
+  <delete id="delete" parameterType="hashmap">
+   update tb_region set deleted='Y'
+   <where>
+    id=#{id}
+       </where>
+  </delete>
+  <update id="update" parameterType="hashmap">
+   update tb_region
+   <set>
+         <if test="name!=null">name=#{ name },</if>
+       </set>
+   <where>
+    id=#{id}
+       </where>
+  </update>
+  <select id="list" resultType="Region" parameterType="hashmap">
+   select * from tb_region
+   <where>
+       </where>
+  </select>
+  <select id="listByPage" resultType="Region" parameterType="hashmap">
+   select * from tb_region
+   <where>
+       </where>
+   limit #{offset},#{rows}
+  </select>
+  <select id="load" resultType="Region" parameterType="hashmap">
+   select * from tb_region
+   <where>
+       </where>
+   limit 0,1
+  </select>
+  <select id="count" resultType="int" parameterType="hashmap">
+   select count(*) from tb_region
+   <where>
+       </where>
+  </select>
+ </mapper>
+ 

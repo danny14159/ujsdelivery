@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+ <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <mapper namespace="com.express.core.service.UserService">
+  <insert id="insert" parameterType="User">
+   insert into tb_user(name,address,phone,univ,password,addr_region,addr_building,openid) values(#{name},#{address},#{phone},#{univ},#{password},#{addr_region},#{addr_building},#{openid});
+  </insert>
+  <update id="update" parameterType="hashmap">
+   update tb_user
+   <set>
+         <if test="name!=null">name=#{ name },</if>
+         <if test="address!=null">address=#{ address },</if>
+         <if test="univ!=null">univ=#{ univ },</if>
+         <if test="password!=null">password=#{ password },</if>
+         <if test="point!=null">point=point+#{ point },</if>
+         <if test="last_sign!=null">last_sign=#{ last_sign },</if>
+         <if test="addr_region!=null">addr_region=#{ addr_region },</if>
+         <if test="addr_building!=null">addr_building=#{ addr_building },</if>
+         <if test="openid!=null">openid=#{ openid },</if>
+       </set>
+   <where>
+    phone=#{phone}
+       </where>
+  </update>
+  <select id="list" resultType="User" parameterType="hashmap">
+   select * from tb_user
+   <where>
+       </where>
+  </select>
+  <select id="listByPage" resultType="User" parameterType="hashmap">
+   select * from tb_user
+   <where>
+       </where>
+   limit #{offset},#{rows}
+  </select>
+  <select id="load" resultType="User" parameterType="string">
+   select * from tb_user
+   <where>
+	   <if test="openid!=null">and openid=#{openid}</if>
+	   <if test="phone!=null">and phone=#{phone}</if>
+       </where>
+   limit 0,1
+  </select>
+  <select id="loadStd" resultType="string" parameterType="string">
+  select additional from tb_user where name=#{name}
+  limit 0,1
+  </select>
+  <select id="listBusinessAccount" resultType="string">
+  select name from tb_user where type='B'
+  </select>
+  <select id="count" resultType="int" parameterType="hashmap">
+   select count(*) from tb_user
+   <where>
+   <if test="openid!=null">and openid=#{openid}</if>
+   <if test="phone!=null">and phone=#{phone}</if>
+       </where>
+  </select>
+  <select id="unBindPhone" parameterType="hashmap">
+  update tb_user set openid = NULL where openid = #{openid};
+  </select>
+  <select id="bindPhone" parameterType="hashmap">
+  update tb_user set openid = #{openid} where phone = #{phone};
+  </select>
+  
+  <select id="listSignTimes" parameterType="map" resultType="SignTimes">
+SELECT
+	count(phone) times,
+	s.sign_name username,
+	s.phone,
+	s.addr_region,
+	s.addr_building
+FROM
+	tb_user_sign s
+WHERE
+	sign_time >= #{from_date} and sign_time &lt;= #{to_date} and state != 'C' and state != 'D'
+GROUP BY
+	s.phone
+HAVING
+	count(s.phone) > #{overTimes} order by times desc limit 100
+  </select>
+  
+  <select id="showSignOrder" resultType="User">
+	SELECT
+		NAME,
+		last_sign
+	FROM
+		tb_user
+	WHERE
+		last_sign >= concat(CURRENT_DATE(), ' 06:00')
+	ORDER BY
+		last_sign
+	LIMIT 10
+  </select>
+  <select id="todaySignOrder" parameterType="string" resultType="int">
+	  SELECT
+		count(1)+1
+	FROM
+		tb_user
+	WHERE
+		last_sign >= concat(CURRENT_DATE(), ' 06:00')
+		and last_sign &lt; (select last_sign from tb_user where phone=#{phone})
+	ORDER BY
+		last_sign
+	LIMIT 1
+  </select>
+ </mapper>

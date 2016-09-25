@@ -1,0 +1,48 @@
+.info .username {
+    display: inline-block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 135px;
+}
+
+.info, .order {
+    padding-bottom: 10px;
+    border-bottom: 1px solid #ebebeb;
+    margin: 20px 0px;
+}
+
+.info span {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.order a {
+    color: #428bca;
+}
+
+.tips {
+    color: gray;
+    font-size: 12px;
+}
+
+.warning {
+    color: red;
+    font-size: 12px;
+}
+
+.order .meta {
+}
+
+hr {
+    margin: 10px 0px;
+}
+
+.warning-large {
+    color: red;
+    font-size: 13px;
+}
+
+.deletePackage:hover {
+    cursor: pointer;
+}

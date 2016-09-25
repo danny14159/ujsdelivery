@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+ <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <mapper namespace="com.express.travel.service.GoodsService">
+  <insert id="insert" parameterType="Goods">
+   insert into tb_goods(title,brief_descn,detail_descn,coverpath,lowest_price,category_id,region_id) values(#{title},#{brief_descn},#{detail_descn},#{coverpath},#{lowest_price},#{category_id},#{region_id});
+  </insert>
+  <delete id="delete" parameterType="hashmap">
+   update tb_goods set deleted='Y'
+   <where>
+    id=#{id}
+       </where>
+  </delete>
+  <update id="update" parameterType="hashmap">
+   update tb_goods
+   <set>
+         <if test="title!=null">title=#{ title },</if>
+         <if test="brief_descn!=null">brief_descn=#{ brief_descn },</if>
+         <if test="detail_descn!=null">detail_descn=#{ detail_descn },</if>
+         <if test="coverpath!=null">coverpath=#{ coverpath },</if>
+         <if test="lowest_price!=null">lowest_price=#{ lowest_price },</if>
+         <if test="category_id!=null">category_id=#{ category_id },</if>
+         <if test="region_id!=null">region_id=#{ region_id },</if>
+         <if test="state!=null">state=#{ state },</if>
+       </set>
+   <where>
+    id=#{id}
+       </where>
+  </update>
+  <select id="list" resultType="Goods" parameterType="hashmap">
+   select t1.brief_descn,t1.id,t1.title,t1.coverpath,t1.lowest_price from tb_goods
+   t1
+   <if test="key!=null">
+   left join tb_goodscategory t2 on t2.id=t1.category_id
+   left join tb_region t3 on t3.id=t1.region_id
+   </if>
+   <where>
+   	<if test="category_id!=null">and category_id=#{ category_id }</if>
+   	<if test="region_id!=null">and region_id=#{ region_id }</if>
+   	<if test="state!=null">and state=#{ state }</if>
+   	<if test="key!=null">and (t1.title like '%${key}%' or t1.brief_descn like '%${key}%' or t2.name like '%${key}%' or t3.name like '%${key}%')</if>
+       </where>
+  </select>
+  <select id="listByPage" resultType="Goods" parameterType="hashmap">
+   select * from tb_goods
+   <where>
+       </where>
+   limit #{offset},#{rows}
+  </select>
+  <select id="load" resultType="Goods" parameterType="hashmap">
+   select * from tb_goods
+   <where>
+   id=#{id}
+       </where>
+   limit 0,1
+  </select>
+  <select id="count" resultType="int" parameterType="hashmap">
+   select count(*) from tb_goods
+    <if test="key!=null">
+    t1
+   left join tb_goodscategory t2 on t2.id=t1.category_id
+   left join tb_region t3 on t3.id=t1.region_id
+   </if>
+   <where>
+   	<if test="category_id!=null">and category_id=#{ category_id }</if>
+   	<if test="region_id!=null">and region_id=#{ region_id }</if>
+   	<if test="state!=null">and state=#{ state }</if>
+   	<if test="key!=null">and (t1.title like '%${key}%' or t1.brief_descn like '%${key}%' or t2.name like '%${key}%' or t3.name like '%${key}%')</if>
+       </where>
+  </select>
+  <select id="listParamValue" parameterType="hashmap" resultType="GoodsAppendixVal">
+  	select t1.*,t2.name AS paramName from tb_goodsappendixval  t1 
+		left join tb_goodsappendixparam t2 on t1.param_id=t2.id
+		where t1.goods_id=#{goods_id} and t2.pid=#{pid};
+  </select>
+ </mapper>
+ 

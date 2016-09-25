@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.express.core.service.ChargeRecordService">
+	<insert id="insert" parameterType="ChargeRecord">
+		insert into
+		tb_charge_record(create_time,create_user,point,target_user)
+		values(#{create_time},#{create_user},#{point},#{target_user});
+	</insert>
+	<select id="list" resultType="ChargeRecord" parameterType="ChargeRecord">
+		select id,create_time,create_user,point,target_user from
+		tb_charge_record
+		<where>
+			<if test="id!=null">and id=#{ id }</if>
+			<if test="create_time!=null">and create_time=#{ create_time }</if>
+			<if test="create_user!=null">and create_user=#{ create_user }</if>
+			<if test="point!=null">and point=#{ point }</if>
+			<if test="target_user!=null">and target_user like concat('%',#{ target_user },'%')</if>
+		</where>
+		order by point desc,create_time desc 
+		
+		limit 100
+	</select>
+	<select id="listByPage" resultType="ChargeRecord" parameterType="ChargeRecord">
+		select id,create_time,create_user,point,target_user from
+		tb_charge_record
+		<where>
+			<if test="id!=null">and id=#{ id }</if>
+			<if test="create_time!=null">and create_time=#{ create_time }</if>
+			<if test="create_user!=null">and create_user=#{ create_user }</if>
+			<if test="point!=null">and point=#{ point }</if>
+			<if test="target_user!=null">and target_user=#{ target_user }</if>
+		</where>
+		limit #{offset},#{rows}
+	</select>
+	<select id="count" resultType="int" parameterType="ChargeRecord">
+		select count(1) from tb_charge_record
+		<where>
+			<if test="id!=null">and id = #{ id }</if>
+			<if test="create_time!=null">and create_time = #{ create_time }</if>
+			<if test="create_user!=null">and create_user = #{ create_user }</if>
+			<if test="point!=null">and point = #{ point }</if>
+			<if test="target_user!=null">and target_user like #{ target_user }</if>
+		</where>
+	</select>
+</mapper>

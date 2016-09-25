@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+ <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <mapper namespace="com.express.core.service.UserSendService">
+  <insert id="insert" parameterType="UserSend">
+   insert into tb_user_send(userid,sign_time,remark,express,address,addr_region,addr_building) 
+   values(#{userid},#{sign_time},#{remark},#{express},#{address},#{addr_region},#{addr_building});
+  </insert>
+  <delete id="delete" parameterType="hashmap">
+   update tb_user_send set deleted='Y'
+   <where>
+    userid=#{userid}
+       </where>
+  </delete>
+  <update id="update" parameterType="hashmap">
+   update tb_user_send
+   <set>
+   state=#{state}
+       </set>
+   <where>
+    id=#{id}
+       </where>
+  </update>
+  <select id="list" resultType="UserSend" parameterType="hashmap">
+   select * from tb_user_send
+   left join tb_user on tb_user.phone=tb_user_send.userid
+   <where>
+   <if test="state!=null">and state=#{state}</if>
+   <if test="userid!=null">and userid=#{userid}</if>
+   <if test="express!=null">and express=#{express}</if>
+   <if test="addr_region!=null">and addr_region=#{addr_region}</if>
+   <if test="addr_building!=null">and addr_building=#{addr_building}</if>
+      <if test="name!=null">and (name like CONCAT(CONCAT('%', #{name}),'%') or id=#{name} or phone=#{name})</if><!-- 相似查找寄件人 -->
+       </where>
+       order by id desc
+     limit #{offset},#{rows}
+  </select>
+  <select id="listByPage" resultType="UserSend" parameterType="hashmap">
+   select * from tb_user_send
+   <where>
+       </where>
+   limit #{offset},#{rows}
+  </select>
+  <select id="load" resultType="UserSend" parameterType="hashmap">
+   select * from tb_user_send
+   <where>
+       </where>
+   limit 0,1
+  </select>
+  <select id="count" resultType="int" parameterType="hashmap">
+   select count(*) from tb_user_send
+   left join tb_user on tb_user.phone=tb_user_send.userid
+   <where>
+   <if test="from_sign_time!=null">and sign_time>=#{from_sign_time}</if>
+   <if test="to_sign_time!=null">and sign_time&lt;#{to_sign_time}</if>
+   <if test="state!=null">and state=#{state}</if>
+   <if test="userid!=null">and userid=#{userid}</if>
+   <if test="express!=null">and express=#{express}</if>
+   <if test="addr_region!=null">and addr_region=#{addr_region}</if>
+   <if test="addr_building!=null">and addr_building=#{addr_building}</if>
+      <if test="name!=null">and (name like CONCAT(CONCAT('%', #{name}),'%') or id=#{name} or phone=#{name})</if><!-- 相似查找寄件人 -->
+       </where>
+  </select>
+ </mapper>

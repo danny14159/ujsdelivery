@@ -1,0 +1,105 @@
+﻿<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <title>${initParam.project_name }——个人信息</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+    
+
+    <link rel="stylesheet" href="/static/css/bootstrap.min.css">
+    <style>
+    .bd-share-popup, .bd-share-popup li {
+        box-sizing: content-box;
+    }
+    span.gray {
+    color: gray;
+}
+
+.edit {
+    margin: 20px 0px;
+}
+
+.edit select.form-control {
+    width: 48%;
+    float: left;
+}
+
+
+.edit select.form-control:first-child {
+    margin-right: 4%;
+}
+
+form {
+    margin-bottom: 15px;
+}
+    </style>
+    
+
+</head>
+<body>
+    
+<link rel="stylesheet" href="/static/css/menu.css">
+<div class='menu'>
+    <a class='btn btn-default' href='/app'><span class='icon-back'></span>首页</a>
+</div>
+
+<div class="container">
+    <div class="edit">
+        <form action="/app/signup" method="POST">
+            <div class="form-group clearfix">
+                    <select class="form-control" name="univ">
+                        <option>江苏大学</option>
+
+                    </select>
+            </div>
+            <div class="form-group">
+                <div class="input-group">
+                    <div class="input-group-addon">
+                        <span class='glyphicon glyphicon-user'></span>
+                    </div>
+                    <input class="form-control" type="text" id='name' placeholder='姓 名' value="${me.name }">
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <p>
+                    宿舍地址: <span class="gray">无需再填学校和校区</span>
+                </p>
+                <div class="input-group">
+                    <div class="input-group-addon">
+                        <span class='glyphicon glyphicon-map-marker'></span>
+                    </div>
+                    <input class="form-control" type="text" id='address' placeholder=' 例如：三区4栋615 '
+                            value='${me.address }'>
+                </div>
+            </div>
+
+            <input class="btn btn-success btn-block" type="button" value='保存修改' onclick="onModify();">
+        </form>
+
+    </div>
+</div>
+
+<script type='text/javascript' src='/static/js/jquery.min.js'></script>
+<script type='text/javascript' src='/static/js/bootstrap.min.js'></script>
+<script type='text/javascript'>
+function onModify(){
+	$.post('/u/upd',{name:$('#name').val(),address:$('#address').val()},function(data){
+		if(data){
+			alert("修改成功！");location.reload();
+		}
+		else alert('修改失败，请稍后再试！');
+	},'json')
+}
+</script>
+
+</body>
+</html>
+
