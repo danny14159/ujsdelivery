@@ -73,7 +73,7 @@ public class SystemModule {
 	/**
 	 * 首单开始计算的时间
 	 */
-	private static final String FIRST_ORDER_FROM = "2015-08-30";
+	private static final String FIRST_ORDER_FROM = "2016-09-01";
 
 	public static Date FIRST_ORDER_DATE = null;
 

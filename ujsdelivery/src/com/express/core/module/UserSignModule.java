@@ -42,6 +42,8 @@ public class UserSignModule extends BasicModule<UserSign>{
 	private UserService userService;
 	@Autowired
 	private WebConfig webConfig;
+	@Autowired
+	private SystemModule systemModule;
 	
 	@Override
 	protected BaseService<UserSign> getService() {
@@ -106,13 +108,13 @@ public class UserSignModule extends BasicModule<UserSign>{
 		if(!point4free) successMsg +="恭喜你获得10积分，到我的订单查看。";
 		else successMsg += "恭喜你成功使用200积分换取免单机会。";
 		
-/*		if(systemModule.isFirstOrder(obj, SystemModule.FIRST_ORDER_DATE)){
+		if(systemModule.isFirstOrder(obj, SystemModule.FIRST_ORDER_DATE)){
 			successMsg += "<br/>新学期首单免费哦~本单已为你免单。";
 			obj.setIsFirst('Y');
 		}
 		else{
 			obj.setIsFirst('N');
-		}*/
+		}
 		
 		try{
 			getLogger().debug(new Gson().toJson(obj));

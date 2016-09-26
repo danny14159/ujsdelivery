@@ -740,10 +740,11 @@ strong{color:#794040}
 			right:20,
 			top:20
 		})
-		.append('<center style="font-size:14px;margin-bottom:5px;">微信搜索：\"${initParam.project_name }\"</center>')
+		.append('<center style="font-size:14px;margin-bottom:5px;text-align:right;">江大包裹侠&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;菜鸟驿站</center>')
 		.append('<div class="qrcode"/>')
 		//.append('<img src="http://ujsdelivery.com/static/img/logo_order.png" width="180px" />')
-		.append('<img src="" width="100px" height="100px"/>')
+		.append('<img src="" width="70px" height="70px" class=""/>')
+		.append('<img src="" width="70px" height="70px" style="margin-left:15px;"/>')
 		);
 		
 		if(sendTimeCN){
@@ -783,10 +784,11 @@ strong{color:#794040}
 	    			text:'http://ujsdelivery.com/app/qr/'+ dataid
 	    		});
 		    	$(this).next('img').attr('src',$(this).find('canvas').get(0).toDataURL('image/png'));
+		    	$(this).next().next('img.cainiao').attr('src','http://ujsdelivery.com/static/img/cainiao.png');
 		    });
 		    //w.document.write(html);  
-		   w.print(); 
-		   w.close(); 
+		   //w.print(); 
+		   //w.close(); 
 	    return false;     
 	} 
 	
@@ -810,6 +812,7 @@ strong{color:#794040}
 			}
 		}
 		imgLogoOrder.src="/static/img/logo_order.png";
+		imgLogoOrder.src="/static/img/cainiao.png";
 	}
 	function sys_remark(id){
 		var comment;
