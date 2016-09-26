@@ -744,7 +744,7 @@ strong{color:#794040}
 		.append('<div class="qrcode"/>')
 		//.append('<img src="http://ujsdelivery.com/static/img/logo_order.png" width="180px" />')
 		.append('<img src="" width="70px" height="70px" class=""/>')
-		.append('<img src="" width="70px" height="70px" style="margin-left:15px;"/>')
+		.append('<img src="http://ujsdelivery.com/static/img/cainiao.png" width="70px" height="70px" style="margin-left:15px"/>')
 		);
 		
 		if(sendTimeCN){
@@ -760,7 +760,7 @@ strong{color:#794040}
 		var style="<style>body{padding:0;margin:0;}.list-item{padding:0.5cm;width:10cm;height:10cm;position:relative;}\
 		strong,.blue,.red,.row{color:#000;border-color:#ccc}.red{text-decoration:underline;}.data-id{font-size:1.5em}\
 		.qrcode{display:none;}.send_time_order{border:2px dashed #333;position:absolute;padding:3px 15px;bottom:50px;right:15px;font-size:2em;transform:rotate(-45deg)}\
-		</style><script type=\"text/javascript\" src=\"/static/js/jquery.min.js\"><\/script>";
+		</style>";
 		
 		    w=window.open("","_blank","k");  
 		    
@@ -784,11 +784,10 @@ strong{color:#794040}
 	    			text:'http://ujsdelivery.com/app/qr/'+ dataid
 	    		});
 		    	$(this).next('img').attr('src',$(this).find('canvas').get(0).toDataURL('image/png'));
-		    	$(this).next().next('img.cainiao').attr('src','http://ujsdelivery.com/static/img/cainiao.png');
 		    });
 		    //w.document.write(html);  
-		   //w.print(); 
-		   //w.close(); 
+		   w.print(); 
+		   w.close(); 
 	    return false;     
 	} 
 	
@@ -811,8 +810,10 @@ strong{color:#794040}
 				printOrder();
 			}
 		}
-		imgLogoOrder.src="/static/img/logo_order.png";
+		//imgLogoOrder.src="/static/img/logo_order.png";
 		imgLogoOrder.src="/static/img/cainiao.png";
+		imgLogoOrder.width=70;
+		imgLogoOrder.height=70;
 	}
 	function sys_remark(id){
 		var comment;
