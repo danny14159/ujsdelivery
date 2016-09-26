@@ -119,7 +119,7 @@ public class SystemModule {
 	 */
 
 	@RequestMapping(value = "/sendinternal", method = RequestMethod.GET)
-	public String send(Model model,String code) {
+	public String send(Model model, String code) {
 		if (Strings.isBlank(code)) {
 			return "core/404";
 		}
@@ -152,7 +152,6 @@ public class SystemModule {
 			return false;
 		return suspend;
 	}
-	
 
 	@RequestMapping("/sign")
 	public String signForWechat() {
@@ -180,7 +179,7 @@ public class SystemModule {
 		if (isSuspend()) {
 			return "suspend";
 		}
-		
+
 		// 1.如果没有code，跳转至404
 		// 2.拿到code，拿到openid，并把openid存到session中
 		// 3.查找cookie中的用户名，如果有则并将用户名与openid相关联
@@ -191,7 +190,6 @@ public class SystemModule {
 		}
 		String openid = WeChatPay.getWechatOpenId(request, code);
 		User u = LoginUtil.getLoginUser(userService, request);
-		
 
 		if (null != u && u.getOpenid() == null && Strings.isNotBlank(openid)) {
 			userService.update(Mapper.make("phone", u.getPhone()).put("openid", openid).toHashMap());
@@ -324,15 +322,17 @@ public class SystemModule {
 	 * @param ps
 	 * @param pn
 	 * @param type
-	 * @param freeNumber 免单数量
-	 * @param freeMessage 免单消息
-	 *            代寄send或者代取send
+	 * @param freeNumber
+	 *            免单数量
+	 * @param freeMessage
+	 *            免单消息 代寄send或者代取send
 	 * @return
-	 * @throws ParseException 
+	 * @throws ParseException
 	 */
 	@RequestMapping({ "/back" })
 	public String expressBack(Model model, @ModelAttribute UserSign us, String repeat, Integer ps, Integer pn,
-			String type, String from_sign_time, String to_sign_time, String send_time,Integer freeNumber,String freeMessage,String sys_remark) throws ParseException {
+			String type, String from_sign_time, String to_sign_time, String send_time, Integer freeNumber,
+			String freeMessage, String sys_remark) throws ParseException {
 		User u = LoginUtil.getLoginUser(userService, request);
 		if (null == u || (!u.isManager() && !u.isBusiness() && !u.isPointManager()))
 			return "redirect:/app/login?redirect=/app/back";
@@ -341,13 +341,13 @@ public class SystemModule {
 			type = "sign";
 
 		// 在application中维护一个刷新状态
-		/*ServletContext application = request.getServletContext();
-		Long refresh_state = (Long) application.getAttribute(REFRESH_STATE);
-		if (refresh_state == null) {
-			refresh_state = new Date().getTime();
-			application.setAttribute(REFRESH_STATE, refresh_state);
-		}
-		model.addAttribute("refresh_state", refresh_state);*/
+		/*
+		 * ServletContext application = request.getServletContext(); Long
+		 * refresh_state = (Long) application.getAttribute(REFRESH_STATE); if
+		 * (refresh_state == null) { refresh_state = new Date().getTime();
+		 * application.setAttribute(REFRESH_STATE, refresh_state); }
+		 * model.addAttribute("refresh_state", refresh_state);
+		 */
 
 		// 今日订单：10 未处理代取：5 未处理代寄：0
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -371,12 +371,11 @@ public class SystemModule {
 			pn = 1;
 		if (null == ps)
 			ps = 100;
-		
-		try{
-			//尝试吧name转换成id
-			us.setName(Integer.parseInt(us.getName(), 36)+"");
-		}
-		catch(Exception e){
+
+		try {
+			// 尝试吧name转换成id
+			us.setName(Integer.parseInt(us.getName(), 36) + "");
+		} catch (Exception e) {
 			System.out.println("转换失败");
 		}
 
@@ -443,20 +442,19 @@ public class SystemModule {
 		model.addAttribute("us", us);
 		model.addAttribute("isManager", u.isManager());
 		model.addAttribute("sys_remark", sys_remark);
-		
+
 		model.addAttribute("todayFreeOrders", userSignService.todayFreeOrders());
-		model.addAttribute("todaySignNum",userSignService.todaySignNum());
-		model.addAttribute("todayFinishedNum",userSignService.todayFinishedNum());
-		
+		model.addAttribute("todaySignNum", userSignService.todaySignNum());
+		model.addAttribute("todayFinishedNum", userSignService.todayFinishedNum());
+
 		model.addAttribute("order_pattern", Webs.ORDER_PATTERN);
-		
-		
+
 		// model.addAttribute("cntDuplicate",
 		// userSignService.countSearchForDuplicate());
 
 		// model.addAttribute("sign_people_num", userService.count(null));
 		// //注册用户数
-		
+
 		return "back/back";
 	}
 
@@ -522,8 +520,7 @@ public class SystemModule {
 				return "core/bindPhone";
 			}
 		}
-		Map<String, Object> par = Mapper.pageTransfer(1, 7).put("userid", u.getPhone())
-				.toHashMap();
+		Map<String, Object> par = Mapper.pageTransfer(1, 7).put("userid", u.getPhone()).toHashMap();
 		model.addAttribute("list", userSignService.list(par));
 		model.addAttribute("list2", userSendService.list(par));
 		model.addAttribute("gateway", Config.GATEWAY);
@@ -575,43 +572,41 @@ public class SystemModule {
 		AjaxReturn ret = null;
 		if (null == u)
 			return "redirect:../login.jsp";
-		
-		
+
 		final Date sign_time = new Date();
 
 		if (u.getLast_sign() != null && u.getLast_sign().getDate() == new Date().getDate()) {
-			if(u.getLast_sign().getHours() >= 0 && u.getLast_sign().getHours() < 6){
+			if (u.getLast_sign().getHours() >= 0 && u.getLast_sign().getHours() < 6) {
 
 				ret = new AjaxReturn(false, "今天已经签到过了，排名从每天6点开始统计");
+			} else {
+				ret = new AjaxReturn(false, "今天已经签到过了，您是第" + userService.todaySignOrder(u.getPhone()) + "位签到的用户");
 			}
-			else{
-				ret = new AjaxReturn(false, "今天已经签到过了，您是第"+userService.todaySignOrder(u.getPhone())+"位签到的用户");
-			}
-		}
-		else{
-			int result = userService.update(Mapper.make("last_sign", sign_time).put("phone", u.getPhone()).put("point", 5).toHashMap());
+		} else {
+			int result = userService
+					.update(Mapper.make("last_sign", sign_time).put("phone", u.getPhone()).put("point", 5).toHashMap());
 			int order = userService.todaySignOrder(u.getPhone());
-			if(sign_time.getHours() < 6){
+			if (sign_time.getHours() < 6) {
 				ret = AjaxReturn.ok(result, "签到成功，恭喜你获得5积分，排名从每天6点开始统计", "系统繁忙，稍后再试");
-			}
-			else{
-				if(order <= 10){
-					new Thread(){
+			} else {
+				if (order <= 10) {
+					new Thread() {
 						public void run() {
-							//userService.update(Mapper.make("phone", u.getPhone()).put("point", 10).toHashMap());
-							//发送代金券
+							// userService.update(Mapper.make("phone",
+							// u.getPhone()).put("point", 10).toHashMap());
+							// 发送代金券
 							SimpleDateFormat sdf = new SimpleDateFormat("yyyy年MM月dd日");
-							WechatTemplateMessage.sendTemplateMsgReward(u.getOpenid(), "早起签到TOP10", u.getName(),"免单一次，仅限"+sdf.format(sign_time)+"给 "+u.getName()+" 同学使用");
+							WechatTemplateMessage.sendTemplateMsgReward(u.getOpenid(), "早起签到TOP10", u.getName(),
+									"免单一次，仅限" + sdf.format(sign_time) + "给 " + u.getName() + " 同学使用");
 						};
 					}.start();
-					ret = AjaxReturn.ok(result, "签到成功，恭喜你获得5积分，您是今天第"+order+"位签到的用户，获得一次免单机会，请在微信号查收", "系统繁忙，稍后再试");
-				}
-				else{
-					ret = AjaxReturn.ok(result, "签到成功，恭喜你获得5积分，您是今天第"+order+"位签到的用户", "系统繁忙，稍后再试");
+					ret = AjaxReturn.ok(result, "签到成功，恭喜你获得5积分，您是今天第" + order + "位签到的用户，获得一次免单机会，请在微信号查收", "系统繁忙，稍后再试");
+				} else {
+					ret = AjaxReturn.ok(result, "签到成功，恭喜你获得5积分，您是今天第" + order + "位签到的用户", "系统繁忙，稍后再试");
 				}
 			}
 			u.setLast_sign(sign_time);
-			u.setPoint(u.getPoint()+5);
+			u.setPoint(u.getPoint() + 5);
 		}
 		List<User> order = userService.showSignOrder();
 		ret.setData(order);
@@ -674,43 +669,44 @@ public class SystemModule {
 	@RequestMapping("/authmobile")
 	@ResponseBody
 	@Transactional
-	public Object authmobile(/*@RequestParam*/ String msg, @RequestParam String phone) {
+	public Object authmobile(/* @RequestParam */ String msg, @RequestParam String phone) {
 
 		try {
 			String sesMsg = (String) WebUtils.getSessionAttribute(request, "msg");
 			System.out.println(sesMsg);
-			//if (sesMsg.equals(msg)) {
+			// if (sesMsg.equals(msg)) {
 
-				String openid = WeChatPay.getWechatOpenId(request, null);
-				if (Strings.isBlank(openid)) {
+			String openid = WeChatPay.getWechatOpenId(request, null);
+			if (Strings.isBlank(openid)) {
 
-					return new AjaxReturn(false, "请从微信打开页面，谢谢配合。");
-				}
-				//int existsOID = userService.count(Mapper.make("openid", openid).toHashMap());
-				int existsPhone = userService.count(Mapper.make("phone", phone).toHashMap());
+				return new AjaxReturn(false, "请从微信打开页面，谢谢配合。");
+			}
+			// int existsOID = userService.count(Mapper.make("openid",
+			// openid).toHashMap());
+			int existsPhone = userService.count(Mapper.make("phone", phone).toHashMap());
 
-				//if (existsOID > 0)
-					//return new AjaxReturn(false, "您已绑定手机号，请勿重复绑定");
-				userService.unBindPhone(Mapper.make("openid", openid).toHashMap());
-				
-				if(existsPhone > 0){
-					//如果该手机号存在，则修改
-					return new AjaxReturn(false, "您已绑定手机号，请勿重复绑定，如需换绑请联系客服。");
-					//userService.update(Mapper.make("phone", phone).put("openid", openid).toHashMap());
-				}
-				else{
-					//否则插入这条记录
-					User user = new User();
-					user.setOpenid(openid);
-					user.setPhone(phone);
-					user.setPoint(0);
-					user.setType("C");
-					userService.insert(user);
-				}
-				return new AjaxReturn(true, null);
-			//}
+			// if (existsOID > 0)
+			// return new AjaxReturn(false, "您已绑定手机号，请勿重复绑定");
+			userService.unBindPhone(Mapper.make("openid", openid).toHashMap());
 
-			//return new AjaxReturn(false, "验证码错误");
+			if (existsPhone > 0) {
+				// 如果该手机号存在，则修改
+				return new AjaxReturn(false, "您已绑定手机号，请勿重复绑定，如需换绑请联系客服。");
+				// userService.update(Mapper.make("phone", phone).put("openid",
+				// openid).toHashMap());
+			} else {
+				// 否则插入这条记录
+				User user = new User();
+				user.setOpenid(openid);
+				user.setPhone(phone);
+				user.setPoint(0);
+				user.setType("C");
+				userService.insert(user);
+			}
+			return new AjaxReturn(true, null);
+			// }
+
+			// return new AjaxReturn(false, "验证码错误");
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new AjaxReturn(false, "system error");
@@ -774,55 +770,52 @@ public class SystemModule {
 	 * @throws ParseException
 	 */
 	@RequestMapping("/analysis")
-	public String orderAnalysis(
-			 String year, 
-			 String month, 
-			Model model) throws ParseException {
-		
+	public String orderAnalysis(String year, String month, Model model) throws ParseException {
+
 		Gson g = new Gson();
 		User u = LoginUtil.getLoginUser(userService, request);
 		if (null == u || (!u.isManager() && !u.isSuperManager()))
 			return "redirect:/app/login?redirect=/app/back";
 
-		if(!Strings.isBlank(year) && !Strings.isBlank(month)){
-			
+		if (!Strings.isBlank(year) && !Strings.isBlank(month)) {
+
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-			
+
 			// 查询这个月有多少天
 			Calendar cal = Calendar.getInstance();
-			cal.setTime(sdf.parse(year+"-"+month+"-"+"01"));
+			cal.setTime(sdf.parse(year + "-" + month + "-" + "01"));
 			int cdays = cal.getActualMaximum(Calendar.DAY_OF_MONTH);
-			
+
 			Date currday = null;
-			
+
 			int[] csignList = new int[cdays];
 			int[] csendList = new int[cdays];
 			// int[] orderPerHour = new int[24]; //24小时下单量统计图
-			
+
 			for (int i = 0; i < cdays; i++) {
 				cal.set(Calendar.DAY_OF_MONTH, i + 1);
 				currday = cal.getTime();
-				
+
 				// 两个查询拥有共同的参数
 				Object param = Mapper.make("from_sign_time", sdf.format(currday))
-						.put("to_sign_time", sdf.format(new Date(currday.getTime() + 24l * 60l * 60l * 1000l))).toHashMap();
+						.put("to_sign_time", sdf.format(new Date(currday.getTime() + 24l * 60l * 60l * 1000l)))
+						.toHashMap();
 				int csign = userSignService.count(param);
 				int csend = userSendService.count(param);
-				
+
 				csignList[i] = csign;
 				csendList[i] = csend;
 			}
 			model.addAttribute("csignList", g.toJson(csignList));
 			model.addAttribute("csendList", g.toJson(csendList));
 			model.addAttribute("cdays", cdays);
-		
 
 		}
-		
-		//统计24小时单量
+
+		// 统计24小时单量
 		int[] numsOf24h = new int[24];
-		for(int i = 0;i<24;i++){
-			
+		for (int i = 0; i < 24; i++) {
+
 			numsOf24h[i] = userSignService.countByHour(i);
 		}
 
@@ -831,8 +824,10 @@ public class SystemModule {
 		model.addAttribute("month", month);
 		return "back/orderAnalysis";
 	}
-	
-	/**下单次数用户统计
+
+	/**
+	 * 下单次数用户统计
+	 * 
 	 * @param from_date
 	 * @param to_date
 	 * @param overTimes
@@ -840,20 +835,18 @@ public class SystemModule {
 	 * @return
 	 */
 	@RequestMapping("/signTimes")
-	public String signTimes(String from_date,String to_date,Integer overTimes,Model model){
+	public String signTimes(String from_date, String to_date, Integer overTimes, Model model) {
 		User u = LoginUtil.getLoginUser(userService, request);
 		if (null == u || (!u.isManager() && !u.isSuperManager()))
 			return "redirect:/app/login?redirect=/app/signTimes";
-		
-		if(Strings.isNotBlank(from_date) && Strings.isNotBlank(to_date) && overTimes != null){
-			List<SignTimes> list = userService.listSignTimes(
-					Mapper.make("from_date", from_date)
-					.put("to_date", to_date)
+
+		if (Strings.isNotBlank(from_date) && Strings.isNotBlank(to_date) && overTimes != null) {
+			List<SignTimes> list = userService.listSignTimes(Mapper.make("from_date", from_date).put("to_date", to_date)
 					.put("overTimes", overTimes).toHashMap());
-			
+
 			model.addAttribute("list", list);
 		}
-		
+
 		model.addAttribute("from_date", from_date);
 		model.addAttribute("to_date", to_date);
 		model.addAttribute("overTimes", overTimes);
@@ -883,21 +876,21 @@ public class SystemModule {
 	 */
 	public boolean isFirstOrder(UserSign sign, Date fromDate) {
 
-		return false;
-		/*
-		 * if(sign.getSign_time().getTime() < fromDate.getTime()){ return false;
-		 * } else{ int countAfter = userSignService.count(
-		 * Mapper.make("from_sign_time", sdf.format(fromDate))
-		 * .put("to_sign_time", sdf.format(sign.getSign_time())) .put("userid",
-		 * sign.getUserid()) .put("inState", 1) .toHashMap()); if(countAfter >0
-		 * ){ //userSignService.update(Mapper.make("id",
-		 * sign.getId()).put("isFirst", 'N').toHashMap()); return false; } else{
-		 * //userSignService.update(Mapper.make("id",
-		 * sign.getId()).put("isFirst", 'Y').toHashMap()); return true; } }
-		 */
-
+		if (sign.getSign_time().getTime() < fromDate.getTime()) {
+			return false;
+		} else {
+			int countAfter = userSignService.count(Mapper.make("from_sign_time", sdf.format(fromDate))
+					.put("to_sign_time", sdf.format(sign.getSign_time())).put("userid", sign.getUserid())
+					.put("inState", 1).toHashMap());
+			if (countAfter > 0) {
+				userSignService.update(Mapper.make("id", sign.getId()).put("isFirst", 'N').toHashMap());
+				return false;
+			} else {
+				userSignService.update(Mapper.make("id", sign.getId()).put("isFirst", 'Y').toHashMap());
+				return true;
+			}
+		}
 	}
-
 
 	@RequestMapping("/req")
 	public String reqRecord(Model model, String key) {
@@ -1004,7 +997,7 @@ public class SystemModule {
 	@RequestMapping("/bindPhoneInternal")
 	public String bindPhonePageInternal(String code) {
 		String openid = WeChatPay.getWechatOpenId(request, code);
-		if(Strings.isBlank(openid)){
+		if (Strings.isBlank(openid)) {
 			return "core/404";
 		}
 		return "core/bindPhone";
@@ -1016,30 +1009,32 @@ public class SystemModule {
 	 * @param phone
 	 * @return
 	 */
-/*	@RequestMapping(value = "/bindPhone", method = RequestMethod.POST)
-	@Transactional
-	@ResponseBody
-	public Object bindPhone(String phone) {
-		String openid = WeChatPay.getWechatOpenId(request, null);
-		if (Strings.isBlank(openid)) {
-			return new AjaxReturn(false, "请使用微信打开");
-		}
-		// update openid = NULL where openid = #{openid}
-		// update openid = openid where phone = phone
-		return new AjaxReturn(true, null);
-	}*/
-	
-	/**生成微信鏈接
+	/*
+	 * @RequestMapping(value = "/bindPhone", method = RequestMethod.POST)
+	 * 
+	 * @Transactional
+	 * 
+	 * @ResponseBody public Object bindPhone(String phone) { String openid =
+	 * WeChatPay.getWechatOpenId(request, null); if (Strings.isBlank(openid)) {
+	 * return new AjaxReturn(false, "请使用微信打开"); } // update openid = NULL where
+	 * openid = #{openid} // update openid = openid where phone = phone return
+	 * new AjaxReturn(true, null); }
+	 */
+
+	/**
+	 * 生成微信鏈接
+	 * 
 	 * @param module
 	 * @return
 	 */
-	private String getWechatUrl(String module){
-		
+	private String getWechatUrl(String module) {
+
 		if (isSuspend()) {
 			return "suspend";
 		}
-		
+
 		return "redirect:https://open.weixin.qq.com/connect/oauth2/authorize?appid=" + Config.APP_ID
-		+ "&redirect_uri=http://ujsdelivery.com/app/"+module+"&response_type=code&scope=snsapi_base&state="+WebUtils.getSessionAttribute(request, "state")+"#wechat_redirect";
+				+ "&redirect_uri=http://ujsdelivery.com/app/" + module + "&response_type=code&scope=snsapi_base&state="
+				+ WebUtils.getSessionAttribute(request, "state") + "#wechat_redirect";
 	}
 }
