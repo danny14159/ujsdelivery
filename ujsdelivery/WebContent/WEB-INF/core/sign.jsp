@@ -208,11 +208,11 @@ color:#888;
 				<textarea class="form-control" rows="4" name="remark2" id="remark2" placeholder="例如：这是昨天（前天）的快递 ；送件请打下面电话110……"></textarea>
 			</div>
 			
-			<%-- <div class="form-group">
-				<p class="text-primary"><input type="checkbox" id="agree"/>授权${initParam.project_name }团队帮您代取本次快递
+			<div class="form-group">
+				<%-- <p class="text-primary"><input type="checkbox" id="agree"/>授权${initParam.project_name }团队帮您代取本次快递
+				</p> --%>
 				<span id="pointForFree"> </span>
-				</p>
-			</div> --%>
+			</div>
 			
 			<div class="form-group" >
 				<div class="col-xs-4"style="padding-left:0px;">
