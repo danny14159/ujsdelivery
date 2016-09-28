@@ -49,20 +49,18 @@
 <div class="container">
     <div class="info">
         
-            <span class="username"><b>用户名:</b> ${me.name }${signed }</span>
+            <span class="username"><b>用户名:</b> ${me.name }</span>
         
        <!--  <span class="label label-success">余额: ￥0.0</span> -->
        
-       <c:if test="${project_name == '江大快递' }">
        
-        <c:if test="${signed == true }">
+        <c:if test="${signed }">
         	<span class="label label-success" onclick="register(this)">签到</span>
         </c:if>
          <c:if test="${!signed }">
          	<span class="label label-default" onclick="register(this)">签到</span>
          </c:if>
          
-         </c:if>
          
         <span class="label label-primary">积分: ${me.point }</span>
     </div>
