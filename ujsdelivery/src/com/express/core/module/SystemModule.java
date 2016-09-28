@@ -590,7 +590,8 @@ public class SystemModule {
 			if (sign_time.getHours() < 6) {
 				ret = AjaxReturn.ok(result, "签到成功，恭喜你获得5积分，排名从每天6点开始统计", "系统繁忙，稍后再试");
 			} else {
-				if (order <= 10) {
+				ret = AjaxReturn.ok(result, "签到成功，恭喜你获得5积分，您是今天第" + order + "位签到的用户", "系统繁忙，稍后再试");
+/*				if (order <= 10) {
 					new Thread() {
 						public void run() {
 							// userService.update(Mapper.make("phone",
@@ -605,7 +606,7 @@ public class SystemModule {
 				} else {
 					ret = AjaxReturn.ok(result, "签到成功，恭喜你获得5积分，您是今天第" + order + "位签到的用户", "系统繁忙，稍后再试");
 				}
-			}
+*/			}
 			u.setLast_sign(sign_time);
 			u.setPoint(u.getPoint() + 5);
 		}
