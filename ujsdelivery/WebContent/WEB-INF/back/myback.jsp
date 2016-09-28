@@ -9,7 +9,7 @@
 <head>
     <meta charset="UTF-8">
 
-    <title>${initParam.project_name }-我的订单</title>
+    <title>${initParam.project_name } - 我的订单</title>
 
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
 
