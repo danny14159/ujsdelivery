@@ -510,6 +510,7 @@ public class SystemModule {
 	@SuppressWarnings("deprecation")
 	@RequestMapping("/mybackinternal")
 	public String myback(Model model, String code) {
+		System.out.println("code:"+code);
 		if (Strings.isBlank(code)) {
 			return "core/404";
 		}
@@ -1033,8 +1034,10 @@ public class SystemModule {
 			return "suspend";
 		}
 
-		return "redirect:https://open.weixin.qq.com/connect/oauth2/authorize?appid=" + Config.APP_ID
+		String url =  "redirect:https://open.weixin.qq.com/connect/oauth2/authorize?appid=" + Config.APP_ID
 				+ "&redirect_uri=http://ujsdelivery.com/app/" + module + "&response_type=code&scope=snsapi_base&state="
 				+ WebUtils.getSessionAttribute(request, "state") + "#wechat_redirect";
+		System.out.println(url);
+		return url;
 	}
 }
