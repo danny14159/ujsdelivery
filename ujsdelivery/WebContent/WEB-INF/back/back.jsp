@@ -242,7 +242,7 @@ strong{color:#794040}
 	<div class="list-item">
 	<div class="hide state" value="${r.state }" data-id="${r.id }">${r.id }</div>
 	<div class="row">
-		<div class="col-xs-3"><strong>单号：</strong><span class="data-id">${r.secretId }</span>-<c:out value="${r.userid }"></c:out></div>
+		<div class="col-xs-3"><strong>单号：</strong><span class="data-id">${r.id }</span>-<c:out value="${r.userid }"></c:out></div>
 		<div class="col-xs-5"><strong>用/收：</strong>
 			<c:if test="${r.sign_name != r.name }">
 				<c:out value="${r.name }"></c:out>/<c:out value="${r.sign_name }"></c:out>

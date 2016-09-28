@@ -55,7 +55,7 @@
        
        <c:if test="${project_name == '江大快递' }">
        
-        <c:if test="${signed }">
+        <c:if test="${signed == true }">
         	<span class="label label-success" onclick="register(this)">签到</span>
         </c:if>
          <c:if test="${!signed }">
@@ -82,7 +82,7 @@
     <c:forEach var="r" items="${list }" varStatus="status">
         <div class="sign order">
             <input name="orderid" value="1735" style="display:none">
-            <div class="tips">订单号: ${r.secretId }</div>
+            <div class="tips">订单号: ${r.id }</div>
             <p class='meta'>
                 <b class="company-field"></b> 
                 <span class="num-field">1&nbsp;件</span>&nbsp;&nbsp;
