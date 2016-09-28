@@ -49,7 +49,7 @@
 <div class="container">
     <div class="info">
         
-            <span class="username"><b>用户名:</b> ${me.name }</span>
+            <span class="username"><b>用户名:</b> ${me.name }${signed }</span>
         
        <!--  <span class="label label-success">余额: ￥0.0</span> -->
        
