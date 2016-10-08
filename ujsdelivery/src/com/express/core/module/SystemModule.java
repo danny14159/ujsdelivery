@@ -372,12 +372,12 @@ public class SystemModule {
 		if (null == ps)
 			ps = 100;
 
-		try {
+		/*try {
 			// 尝试吧name转换成id
 			us.setName(Integer.parseInt(us.getName(), 36) + "");
 		} catch (Exception e) {
 			System.out.println("转换失败");
-		}
+		}*/
 
 		Mapper param = Mapper.pageTransfer(pn, ps).put("state", us.getState())
 				.put("express", Strings.isBlank(us.getExpress()) ? null : us.getExpress())
