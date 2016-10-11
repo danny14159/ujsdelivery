@@ -89,6 +89,7 @@ color:#888;
 			action="" onsubmit="return false;">
 			<p class="board">
 			<strong>中午件请在12:00前下单。</strong>
+			要求中午送到的请在12点前下单。江大包裹侠每周五只要一块钱一件！
 			<a href="javascript:;" class="text-danger feeRule-link"style="font-size: 14px;text-decoration: underline;">收费规则</a>
 			</br>
 			</p>
@@ -155,38 +156,39 @@ color:#888;
 				<button class="btn btn-primary btn-xs" onclick="changeAddr();">换个地址</button>
 				</p>
 			</c:if>
-			<%!public String getNextDay(){
-				
-				calendar.add(java.util.Calendar.DAY_OF_MONTH , 1);
+			<%!public String getNextDay(int add){
+				java.util.Calendar calendar = java.util.Calendar.getInstance();  
+				calendar.add(java.util.Calendar.DAY_OF_MONTH , add);
 				java.util.Date next = calendar.getTime();
 				String nextDay = sdf.format(next);
 				
 				return nextDay;
-			} %>
-			
-			<%!java.util.Calendar calendar = java.util.Calendar.getInstance();   %>
-			<%!java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd"); %>
-			<%
-				java.util.Date now = new java.util.Date();
-				String today = sdf.format(now);
-				calendar.setTime(now);
-				int hour = calendar.get(java.util.Calendar.HOUR_OF_DAY);
-				int minute = calendar.get(java.util.Calendar.MINUTE);
-				boolean after17 = /* (hour >= 16 && minute >=30) || */ hour >= 17;
-				
-				String tomorrowStr = getNextDay();
-				String AfterTommorrow = getNextDay();
+			} 
+				public boolean isAfter(int hourToCompare){
+					java.util.Calendar calendar = java.util.Calendar.getInstance();
+					calendar.setTime(new java.util.Date());
+					int hour = calendar.get(java.util.Calendar.HOUR_OF_DAY);
+					int minute = calendar.get(java.util.Calendar.MINUTE);
+					return /* (hour >= 16 && minute >=30) || */ hour >= hourToCompare;
+				}
 			%>
+			
+			<%!java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd"); %>
 			
 			<div class="form-group">
 				<span>送件时间：</span><span class="gray">17:00前下单当天取送，之后下单的隔天取送。</span>
 				<select name="send_time" class="form-control">
-					<%if(!after17){
+					<%if(!isAfter(13)){
 					%>	
-						<option value="<%=today+" 20:30-22:00"%>" selected="selected">今天20:30-22:00</option>
+						<option value="<%=getNextDay(0)+" 12:30-13:30"%>" selected="selected">中午12:30-13:30</option>
 					<%} %>
-					<option value="<%=tomorrowStr+" 20:30-22:00"%>">明天20:30-22:00</option>
-					<option value="<%=AfterTommorrow+" 20:30-22:00"%>">后天20:30-22:00</option>
+					<%if(!isAfter(17)){
+					%>	
+						<option value="<%=getNextDay(0)+" 20:30-22:00"%>" selected="selected">今天20:30-22:00</option>
+					<%} %>
+					<option value="<%=getNextDay(1)+" 12:30-13:30"%>">明天12:30-13:30</option>
+					<option value="<%=getNextDay(1)+" 20:30-22:00"%>">明天20:30-22:00</option>
+					<option value="<%=getNextDay(2)+" 20:30-22:00"%>">后天20:30-22:00</option>
 				</select>
 			</div>
 
@@ -255,7 +257,7 @@ color:#888;
 			</div>
 		</div>
 	</div>
-	<div id="message-modal" class="modal fade">
+	<%-- <div id="message-modal" class="modal fade">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-body">
@@ -276,7 +278,7 @@ color:#888;
 				</div>
 			</div>
 		</div>
-	</div>
+	</div> --%>
 
 	<script type="text/javascript" src="/static/js/jquery.min.js"></script>
 	<script type="text/javascript" src="/static/js/bootstrap.min.js"></script>

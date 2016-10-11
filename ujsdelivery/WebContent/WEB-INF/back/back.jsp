@@ -160,7 +160,9 @@ strong{color:#794040}
 
 <select class="form-control input-sm" name="send_time" id="send_time" onchange="submitFM();">
 	<option value="">不限送件时间</option>
+	<option value="${today} 12:30-13:30">今天12:30-13:30</option>
 	<option value="${today} 19:00-21:00">今天19:00-21:00</option>
+	<option value="${tomorrow } 12:30-13:30">明天12:30-13:30</option>
 	<option value="${tomorrow } 19:00-21:00">明天19:00-21:00</option>
 	<option value="${afterTommorrow } 19:00-21:00">后天19:00-21:00</option>
 </select>
