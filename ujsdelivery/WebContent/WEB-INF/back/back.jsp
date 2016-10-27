@@ -205,8 +205,9 @@ strong{color:#794040}
 	<a class="btn btn-default"  href="/excel/comment.xls" type="button">导出评论</a>
 	<a class="btn btn-default"  href="javascript:;" type="button" onclick="exportOrders()">导出订单</a>
 	<a class="btn btn-default"  href="/app/signTimes" type="button" target="_blank">下单次数</a>
+	<a class="btn btn-default"  href="/app/signinternal" type="button" target="_blank">微信下单</a>
 	<!-- <button class="btn btn-default" type="button">锁定后台</button> -->
-	<button class="btn btn-primary" onclick="onBatch();" style="display: none;">批量处理</button>
+	<!-- <button class="btn btn-primary" onclick="onBatch();" style="display: none;">批量处理</button> -->
 </c:if>
 
 <ul class="nav nav-tabs" style="margin-top:15px; ">

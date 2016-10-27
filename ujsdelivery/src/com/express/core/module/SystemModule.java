@@ -176,29 +176,30 @@ public class SystemModule {
 	 */
 	@RequestMapping("/signinternal")
 	public String sign(Model model, String code) {
-		if (isSuspend()) {
-			return "suspend";
-		}
-
-		// 1.如果没有code，跳转至404
-		// 2.拿到code，拿到openid，并把openid存到session中
-		// 3.查找cookie中的用户名，如果有则并将用户名与openid相关联
-		// 如果没有则跳转到完善信息页面
-
-		if (Strings.isBlank(code)) {
-			return "core/404";
-		}
-		String openid = WeChatPay.getWechatOpenId(request, code);
 		User u = LoginUtil.getLoginUser(userService, request);
-
-		if (null != u && u.getOpenid() == null && Strings.isNotBlank(openid)) {
-			userService.update(Mapper.make("phone", u.getPhone()).put("openid", openid).toHashMap());
+		if(u.isManager()){
 		}
-		u = LoginUtil.login(request, code, userService);
-		if (null == u) {
-			return "core/bindPhone";
+		else{
+			
+			if (isSuspend()) {
+				return "suspend";
+			}
+			// 1.如果没有code，跳转至404
+			// 2.拿到code，拿到openid，并把openid存到session中
+			// 3.查找cookie中的用户名，如果有则并将用户名与openid相关联
+			// 如果没有则跳转到完善信息页面
+			if (Strings.isBlank(code)) {
+				return "core/404";
+			}
+			String openid = WeChatPay.getWechatOpenId(request, code);
+			if (null != u && u.getOpenid() == null && Strings.isNotBlank(openid)) {
+				userService.update(Mapper.make("phone", u.getPhone()).put("openid", openid).toHashMap());
+			}
+			u = LoginUtil.login(request, code, userService);
+			if (null == u) {
+				return "core/bindPhone";
+			}
 		}
-
 		return "core/sign";
 	}
 

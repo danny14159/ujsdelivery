@@ -178,15 +178,15 @@ color:#888;
 			<div class="form-group">
 				<span>送件时间：</span><span class="gray">17:00前下单当天取送，之后下单的隔天取送。</span>
 				<select name="send_time" class="form-control">
-					<%if(!isAfter(13)){
+					<%-- <%if(!isAfter(13)){
 					%>	
 						<option value="<%=getNextDay(0)+" 12:30-13:30"%>" selected="selected">中午12:30-13:30</option>
-					<%} %>
+					<%} %> --%>
 					<%if(!isAfter(17)){
 					%>	
 						<option value="<%=getNextDay(0)+" 20:30-22:00"%>" selected="selected">今天20:30-22:00</option>
 					<%} %>
-					<option value="<%=getNextDay(1)+" 12:30-13:30"%>">明天12:30-13:30</option>
+					<%-- <option value="<%=getNextDay(1)+" 12:30-13:30"%>">明天12:30-13:30</option> --%>
 					<option value="<%=getNextDay(1)+" 20:30-22:00"%>">明天20:30-22:00</option>
 					<option value="<%=getNextDay(2)+" 20:30-22:00"%>">后天20:30-22:00</option>
 				</select>
@@ -250,8 +250,10 @@ color:#888;
 					<div>您的包裹将尽快送至您手中( ^_^ )</div>
 					<img src="/static/img/success.jpg" width="100%"/>
 					<div align="center">
-						<a class="btn btn-primary" style="margin: 5px 0"
+						<a class="btn btn-default" style="margin: 5px 0"
 							href="/app/myback">确 定</a>
+						<button class="btn btn-warning" style="margin: 5px 0"
+							onclick="location.reload()">再来一单</button>
 					</div>
 				</div>
 			</div>
