@@ -361,6 +361,9 @@ function order(){
         		/* location.href="/app/act/1111"; */
         		$('#success-modal .msg').html(data.msg);
         		$('#success-modal').modal();
+        		$('#success-modal').on('hide.bs.modal', function (e) {
+        			  location.reload();
+        		});
         	}
         	else {
         		alert(data.msg);
