@@ -177,7 +177,7 @@ public class SystemModule {
 	@RequestMapping("/signinternal")
 	public String sign(Model model, String code) {
 		User u = LoginUtil.getLoginUser(userService, request);
-		if(u.isManager()){
+		if(null!=u && u.isManager()){
 		}
 		else{
 			
