@@ -40,7 +40,6 @@ import com.express.core.extend.Strings;
 import com.express.core.extend.Webs;
 import com.express.core.extend.wechat.Config;
 import com.express.core.extend.wechat.WeChatPay;
-import com.express.core.extend.wechat.WechatTemplateMessage;
 import com.express.core.service.ReqRecordService;
 import com.express.core.service.UserSendService;
 import com.express.core.service.UserService;
@@ -1041,5 +1040,14 @@ public class SystemModule {
 				+ WebUtils.getSessionAttribute(request, "state") + "#wechat_redirect";
 		System.out.println(url);
 		return url;
+	}
+	
+	@RequestMapping("/importOrder")
+	public String importOrder(){
+		User u = LoginUtil.getLoginUser(userService, request);
+		if (null == u || !u.isManager())
+			return "redirect:/app/back";
+		
+		return "back/importOrder";
 	}
 }

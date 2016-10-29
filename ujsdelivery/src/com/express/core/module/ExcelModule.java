@@ -6,6 +6,8 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Iterator;
@@ -29,8 +31,11 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hssf.util.HSSFColor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.express.core.bean.User;
 import com.express.core.bean.UserSign;
@@ -40,6 +45,7 @@ import com.express.core.extend.Webs;
 import com.express.core.service.UserService;
 import com.express.core.service.UserSignService;
 import com.express.core.util.Commons;
+import com.express.core.util.ExcelReader;
 import com.express.core.util.LoginUtil;
 
 @RequestMapping("/excel")
@@ -50,6 +56,8 @@ public class ExcelModule {
 	private UserSignService userSignService;
 	@Autowired
 	private UserService userService;
+	@Autowired
+	private UserSignModule userSignModule;
 	
 	/**
 	 * 导出所有的评价 包含单号，评论内容，日期，姓名，区，栋
@@ -265,5 +273,88 @@ public class ExcelModule {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	@RequestMapping(value="/upload")
+	public String uploadOrderFile(MultipartFile file,String opt,Model model,HttpServletRequest request) throws Exception{
+		User u = LoginUtil.getLoginUser(userService, request);
+		if (null == u || !u.isManager())
+			return "redirect:/app/back";
+		String failMessage = null ;
+		if(null == file || file.isEmpty()){
+			failMessage = "请选择文件！";
+			return "back/importOrder";
+		}
+		ExcelReader excelReader = new ExcelReader();
+		String[][] content = null;
+		try{
+			content = excelReader.readExcelContent(file.getInputStream());
+		}
+		catch(Exception e){
+			e.printStackTrace();
+			failMessage = "不支持的文件格式";
+			return "back/importOrder";
+		}
+		List<UserSign> list = getUserSignFromArray(content);
+		List<UserSign> failList = new ArrayList<>();
+		int successCount = 0;
+		int failCount = 0;
+		if("preview".equals(opt)){
+			model.addAttribute("list", list);
+		}
+		else if("insert".equals(opt)){
+			failMessage = "";
+			for(UserSign userSign:list){
+				try{
+					userSign.setUserid(u.getPhone());
+					userSign.setName(u.getName());
+					userSign.setState('S');
+					userSignService.insert(userSign);
+					successCount ++ ;
+				}
+				catch(Exception e){
+					e.printStackTrace();
+					failList.add(userSign);
+					failMessage += e.getMessage();
+					failCount ++ ;
+				}
+			}
+			model.addAttribute("failList", failList);
+			model.addAttribute("successCount", successCount);
+			model.addAttribute("failCount", failCount);
+		}
+		model.addAttribute("failMessage", failMessage);
+		return "back/importOrder";
+	}
+	
+	public String getNextDay(int add){
+		java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd");
+		java.util.Calendar calendar = java.util.Calendar.getInstance();  
+		calendar.add(java.util.Calendar.DAY_OF_MONTH , add);
+		java.util.Date next = calendar.getTime();
+		String nextDay = sdf.format(next);
+		
+		return nextDay;
+	} 
+	
+	public List<UserSign> getUserSignFromArray(String[][] array){
+		List<UserSign> list = new ArrayList<>();
+		if(array == null){
+			return list;
+		}
+		for(String[] item:array){
+			if(item == null) continue;
+			UserSign userSign = new UserSign();
+			userSign.setExpress(item[0]);
+			userSign.setSign_name(item[1]);
+			userSign.setPhone(item[2]);
+			userSign.setAddr_region(item[3]);
+			userSign.setAddr_building(item[4]);
+			userSign.setRemark(item[5]);
+			userSign.setSend_time(getNextDay(0)+" 20:30-22:00");
+			userSign.setSign_time(new Date());
+			list.add(userSign);
+		}
+		return list;
 	}
 }

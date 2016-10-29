@@ -204,6 +204,7 @@ strong{color:#794040}
 	<!-- <a class="btn btn-default"  href="/app/req" type="button" target="_blank">操作记录</a> -->
 	<a class="btn btn-default"  href="/excel/comment.xls" type="button">导出评论</a>
 	<a class="btn btn-default"  href="javascript:;" type="button" onclick="exportOrders()">导出订单</a>
+	<a class="btn btn-default"  type="button" href="/app/importOrder">导入订单</a>
 	<a class="btn btn-default"  href="/app/signTimes" type="button" target="_blank">下单次数</a>
 	<a class="btn btn-default"  href="/app/signinternal" type="button" target="_blank">微信下单</a>
 	<!-- <button class="btn btn-default" type="button">锁定后台</button> -->

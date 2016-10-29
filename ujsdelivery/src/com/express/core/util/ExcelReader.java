@@ -52,9 +52,7 @@ public class ExcelReader {
      * @param InputStream
      * @return Map 包含单元格数据内容的Map对象
      */
-    public Map<Integer, String> readExcelContent(InputStream is) {
-        Map<Integer, String> content = new HashMap<Integer, String>();
-        String str = "";
+    public String[][] readExcelContent(InputStream is) {
         try {
             fs = new POIFSFileSystem(is);
             wb = new HSSFWorkbook(fs);
@@ -66,20 +64,20 @@ public class ExcelReader {
         int rowNum = sheet.getLastRowNum();
         row = sheet.getRow(0);
         int colNum = row.getPhysicalNumberOfCells();
+        String[][] content = new String[colNum][];
         // 正文内容应该从第二行开始,第一行为表头的标题
         for (int i = 1; i <= rowNum; i++) {
             row = sheet.getRow(i);
             int j = 0;
+            content[i] = new String[colNum];
             while (j < colNum) {
                 // 每个单元格的数据内容用"-"分割开，以后需要时用String类的replace()方法还原数据
                 // 也可以将每个单元格的数据设置到一个javabean的属性中，此时需要新建一个javabean
                 // str += getStringCellValue(row.getCell((short) j)).trim() +
                 // "-";
-                str += getCellFormatValue(row.getCell((short) j)).trim() + "    ";
+            	content[i][j] = getCellFormatValue(row.getCell((short) j)).trim();
                 j++;
             }
-            content.put(i, str);
-            str = "";
         }
         return content;
     }
@@ -175,7 +173,9 @@ public class ExcelReader {
                 // 如果是纯数字
                 else {
                     // 取得当前Cell的数值
-                    cellvalue = String.valueOf(cell.getNumericCellValue());
+                	Double dValue = cell.getNumericCellValue();
+                	int intValue = (int) dValue.intValue();
+                    cellvalue = String.valueOf(intValue);
                 }
                 break;
             }
@@ -195,7 +195,7 @@ public class ExcelReader {
 
     }
 
-    public static void main(String[] args) {
+/*    public static void main(String[] args) {
         try {
             // 对读取Excel表格标题测试
             InputStream is = new FileInputStream("d:\\test2.xls");
@@ -218,5 +218,5 @@ public class ExcelReader {
             System.out.println("未找到指定路径的文件!");
             e.printStackTrace();
         }
-    }
+    }*/
 }
