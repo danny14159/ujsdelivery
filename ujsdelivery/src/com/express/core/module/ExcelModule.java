@@ -283,6 +283,7 @@ public class ExcelModule {
 		String failMessage = null ;
 		if(null == file || file.isEmpty()){
 			failMessage = "请选择文件！";
+			model.addAttribute("failMessage", failMessage);
 			return "back/importOrder";
 		}
 		ExcelReader excelReader = new ExcelReader();
@@ -293,6 +294,7 @@ public class ExcelModule {
 		catch(Exception e){
 			e.printStackTrace();
 			failMessage = "不支持的文件格式";
+			model.addAttribute("failMessage", failMessage);
 			return "back/importOrder";
 		}
 		List<UserSign> list = getUserSignFromArray(content);

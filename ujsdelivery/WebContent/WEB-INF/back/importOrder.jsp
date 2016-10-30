@@ -21,6 +21,7 @@ body{font-family: 'Microsoft Yahei'}
 	<ul class="list-group">
 	  <li class="list-group-item text-danger">1.上传的文件必须为XLS格式，XLSX格式不支持！</li>
 	  <li class="list-group-item text-danger">2.请按下图所示对应列录入订单数据，第一行数据不会识别！</li>
+	  <li class="list-group-item text-danger">3.不要刷新本页面，可能会导致订单重复导入！</li>
 	  <li class="list-group-item"><img src="/static/img/helper.jpg"/></li>
 	</ul>
 </div>
@@ -55,7 +56,7 @@ body{font-family: 'Microsoft Yahei'}
 		
 		</table>			
 	</c:if>
-	<c:if test="${failMessage!=null }">失败日志：${failMessage }</c:if>
+	<c:if test="${not empty failMessage }">失败日志：${failMessage }</c:if>
 </div>
 
 <c:if test="${param.opt=='preview' }">

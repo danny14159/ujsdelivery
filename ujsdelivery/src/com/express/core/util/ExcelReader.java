@@ -1,13 +1,10 @@
 package com.express.core.util;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFDateUtil;
@@ -75,7 +72,7 @@ public class ExcelReader {
                 // 也可以将每个单元格的数据设置到一个javabean的属性中，此时需要新建一个javabean
                 // str += getStringCellValue(row.getCell((short) j)).trim() +
                 // "-";
-            	content[i][j] = getCellFormatValue(row.getCell((short) j)).trim();
+            	content[i][j] = getStringCellValue(row.getCell((short) j)).trim();
                 j++;
             }
         }
@@ -89,13 +86,15 @@ public class ExcelReader {
      * @return String 单元格数据内容
      */
     private String getStringCellValue(HSSFCell cell) {
+    	if(cell == null) return "";
         String strCell = "";
         switch (cell.getCellType()) {
         case HSSFCell.CELL_TYPE_STRING:
             strCell = cell.getStringCellValue();
             break;
         case HSSFCell.CELL_TYPE_NUMERIC:
-            strCell = String.valueOf(cell.getNumericCellValue());
+        	DecimalFormat df = new DecimalFormat("0");  
+            strCell = df.format(cell.getNumericCellValue());
             break;
         case HSSFCell.CELL_TYPE_BOOLEAN:
             strCell = String.valueOf(cell.getBooleanCellValue());
@@ -108,9 +107,6 @@ public class ExcelReader {
             break;
         }
         if (strCell.equals("") || strCell == null) {
-            return "";
-        }
-        if (cell == null) {
             return "";
         }
         return strCell;
@@ -173,9 +169,7 @@ public class ExcelReader {
                 // 如果是纯数字
                 else {
                     // 取得当前Cell的数值
-                	Double dValue = cell.getNumericCellValue();
-                	int intValue = (int) dValue.intValue();
-                    cellvalue = String.valueOf(intValue);
+                    cellvalue = String.valueOf(cell.getNumericCellValue()).split(".")[0];
                 }
                 break;
             }
