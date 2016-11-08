@@ -100,7 +100,7 @@ color:#888;
 					<option exp1="圆通" exp2="香江">圆通 - 香江</option>
 					<option exp1="申通" value="申通">校内申通</option>
 					<option exp1="韵达" exp2="中门">韵达 - 中门</option>
-					<option exp1="韵达" exp2="香江">韵达 - 香江</option>
+					<option exp1="图书馆" exp2="菜鸟驿站">图书馆对面菜鸟驿站</option>
 					<option exp1="百世快递">百世快递</option>
 					<option value="快递超市" exp1="快递超市">快递超市(中通等)</option>
 					<option value="其它公司" exp1="其它">其它公司(中午件等)</option>

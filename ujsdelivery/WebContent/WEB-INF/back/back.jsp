@@ -143,19 +143,20 @@ strong{color:#794040}
 
 	<select class="form-control input-sm" name="express" id="express" onchange="submitFM();">
 					<option data-value="0" value="">所有公司</option>
-					<option data-value="1">圆通 - 中门</option>
-					<option data-value="1">圆通 - 香江</option>
-					<option data-value="3">申通</option>
-					<option data-value="4">韵达 - 中门</option>
-					<option data-value="4">韵达 - 香江</option>
-					<option data-value="6">百世快递</option>
-					<option value="快递超市">快递超市(中通等)</option>
-					<option value="其它公司">其它公司(中午件等)</option>
-					<option data-value="13">天天</option>
-					<option data-value="13">顺丰 - 京江</option>
-					<option data-value="13">顺丰 - 香江</option>
-					<option data-value="7">EMS</option>
-					<option data-value="13">中国邮政</option>
+					<option data-value="RTZM">圆通 - 中门</option>
+					<option data-value="RTXJ">圆通 - 香江</option>
+					<option data-value="ST">申通</option>
+					<option data-value="YDZM">韵达 - 中门</option>
+					<option data-value="YDXJ" value="韵达 - 香江">韵达 - 香江（旧）</option>
+					<option data-value="YDXJ">图书馆对面菜鸟驿站</option>
+					<option data-value="BSKD">百世快递</option>
+					<option value="快递超市" data-value="KDCS">快递超市(中通等)</option>
+					<option value="其它公司" data-value="QTGS">其它公司(中午件等)</option>
+					<option data-value="TT">天天</option>
+					<option data-value="SFJJ">顺丰 - 京江</option>
+					<option data-value="SFXJ">顺丰 - 香江</option>
+					<option data-value="EMS">EMS</option>
+					<option data-value="ZGYZ">中国邮政</option>
 	</select>
 
 <select class="form-control input-sm" name="send_time" id="send_time" onchange="submitFM();">
