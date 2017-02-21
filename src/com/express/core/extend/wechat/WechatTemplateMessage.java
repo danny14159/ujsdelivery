@@ -42,7 +42,7 @@ public class WechatTemplateMessage {
 		msg.setTemplate_id(MSG_TPL_ORDER_SUCCESS);
 		msg.setTopcolor(topcolor);
 		msg.setTouser(toUser);
-		msg.setUrl("http://ujsdelivery.com/app/myback");
+		msg.setUrl("http://ujs.hd1.newtouch.com:49377/app/myback");
 		msg.getData().put("first", new TplMessageData("【"+Commons.PROJECT_NAME+"】您的订单已成功提交，如有变动请重新下单", "#173177"));
 		msg.getData().put("keyword1", new TplMessageData(sign_address, "#D43D3D"));
 		msg.getData().put("keyword2", new TplMessageData(sign_no, "#D43D3D"));
@@ -75,7 +75,7 @@ public class WechatTemplateMessage {
 		msg.setTemplate_id(MSG_TPL_REWARD);
 		msg.setTopcolor("#ffffff");
 		msg.setTouser(toUser);
-		msg.setUrl("http://ujsdelivery.com");
+		msg.setUrl("http://ujs.hd1.newtouch.com:49377");
 		msg.getData().put("first", new TplMessageData("【"+Commons.PROJECT_NAME+"】恭喜你，奖品已发放", "#173177"));
 		msg.getData().put("keyword1", new TplMessageData(activity, "#D43D3D"));
 		msg.getData().put("keyword2", new TplMessageData(reward, "#D43D3D"));

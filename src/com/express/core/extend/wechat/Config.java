@@ -25,7 +25,7 @@ public class Config {
 	 * 网关
 	 */
 	public static final String GATEWAY = "http://804956748a.imwork.net";
-	//public static final String GATEWAY = "http://ujsdelivery.com";
+	//public static final String GATEWAY = "http://ujs.hd1.newtouch.com:49377";
 	
 	/**
 	 * 异步回调通知地址

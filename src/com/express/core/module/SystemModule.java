@@ -1036,7 +1036,7 @@ public class SystemModule {
 		}
 
 		String url =  "redirect:https://open.weixin.qq.com/connect/oauth2/authorize?appid=" + Config.APP_ID
-				+ "&redirect_uri=http://ujsdelivery.com/app/" + module + "&response_type=code&scope=snsapi_base&state="
+				+ "&redirect_uri=http://ujs.hd1.newtouch.com:49377/app/" + module + "&response_type=code&scope=snsapi_base&state="
 				+ WebUtils.getSessionAttribute(request, "state") + "#wechat_redirect";
 		System.out.println(url);
 		return url;
