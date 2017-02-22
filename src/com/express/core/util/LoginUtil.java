@@ -55,13 +55,15 @@ public class LoginUtil {
 	}
 	
 	/**获取用户的session登录信息，如果未登录则从cookie中寻找用户名和密码
-	 * @param UserService 传null则不会在cookie中找
+	 * @param  传null则不会在cookie中找
 	 * @return
 	 */
 	public static User getLoginUser(UserService userService,HttpServletRequest request){
 		User sesUser = (User) WebUtils.getSessionAttribute(request, "me");
 		
-		if(null == sesUser) return null;
+		if(null == sesUser) {
+			return userService.load(Mapper.make("openid", "fake_openid").toHashMap());
+		}
 		
 		return sesUser;
 	}

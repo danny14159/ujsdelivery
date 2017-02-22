@@ -220,8 +220,8 @@ public class WeChatPay {
 	 * @return
 	 */
 	public static String getWechatOpenId(HttpServletRequest request,String code){
-		
-		String openid = (String) WebUtils.getSessionAttribute(request, Config.ME_WECHAT);
+		return "fake_openid";
+		/*String openid = (String) WebUtils.getSessionAttribute(request, Config.ME_WECHAT);
 		
 		if(null == openid && Strings.isNotBlank(code)){
 			AccessToken token = WeChatPay.getOpenIdByCode(code);
@@ -229,7 +229,7 @@ public class WeChatPay {
 			WebUtils.setSessionAttribute(request, Config.ME_WECHAT, token.getOpenid());
 			return token.getOpenid();
 		}
-		return openid;
+		return openid;*/
 		
 	}
 	
