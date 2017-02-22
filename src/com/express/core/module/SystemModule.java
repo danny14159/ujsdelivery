@@ -529,7 +529,8 @@ public class SystemModule {
 		boolean signed = u.getLast_sign() == null || u.getLast_sign().getDate() != new Date().getDate();
 		model.addAttribute("signed", signed);
 
-		return "back/myback";
+		//return "back/myback";
+		return "redirect:/app";
 	}
 
 	@RequestMapping("/profile")
