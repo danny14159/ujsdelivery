@@ -730,7 +730,7 @@ strong{color:#794040}
 		})
 		.append('<center style="font-size:14px;margin-bottom:5px;">${initParam.project_name }&nbsp;优质贴心</center>')
 		.append('<div class="qrcode"/>')
-		//.append('<img src="http://ujs.hd1.newtouch.com:49377/static/img/logo_order.png" width="180px" />')
+		//.append('<img src="http://ujsparcelman.com/static/img/logo_order.png" width="180px" />')
 		.append('<img src="" width="100px" height="100px"/>')
 		);
 		
@@ -759,7 +759,7 @@ strong{color:#794040}
 		    $('.state[value="S"]').each(function(){
 		    	$('body',w.document).append(generateHtmlForPrint($(this).closest('.list-item')));
 		    	$(this).closest('.list-item').find('.qrcode').qrcode({
-	    			text:'http://ujs.hd1.newtouch.com:49377/app/qr/'+$(this).attr('data-id')
+	    			text:'http://ujsparcelman.com/app/qr/'+$(this).attr('data-id')
 	    		});
 //				printOrder($(this).closest('.list-item'));
 			});
@@ -768,7 +768,7 @@ strong{color:#794040}
 		    	$(this).qrcode({
 		    		/* width:100,
 		    		height:100, */
-	    			text:'http://ujs.hd1.newtouch.com:49377/app/qr/'+ dataid
+	    			text:'http://ujsparcelman.com/app/qr/'+ dataid
 	    		});
 		    	$(this).next('img').attr('src',$(this).find('canvas').get(0).toDataURL('image/png'));
 		    });
