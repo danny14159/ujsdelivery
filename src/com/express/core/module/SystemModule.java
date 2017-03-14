@@ -1040,7 +1040,7 @@ public class SystemModule {
 				+ WebUtils.getSessionAttribute(request, "state") + "#wechat_redirect";
 
 
-		return "redirect:/app/"+module+"?code=124";
+		return url;
 	}
 	
 	@RequestMapping("/importOrder")
