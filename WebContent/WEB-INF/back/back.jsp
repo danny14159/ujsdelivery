@@ -300,7 +300,7 @@ strong{color:#794040}
             	<div class="row red">客户评价：<c:out value="${r.comment }"/></div>
        </c:if>
 	 <c:if test="${!empty r.sys_remark }">
-            	<div class="row red">系统备注：<c:out value="${r.sys_remark }"/></div>
+            	<div class="row red sys-remark">系统备注：<c:out value="${r.sys_remark }"/></div>
        </c:if>
        <c:if test="${isManager }">
 		<div class="row optPanel">
@@ -715,7 +715,8 @@ strong{color:#794040}
 		];
 		
 		$dom = dom.clone();
-		
+		var sys_remark = $dom.find('.row.sys-remark').html();
+
 		$dom.find('.row:gt(3)').remove();
 		
 		$dom.find('.row:eq(3) .col-xs-4').remove();
@@ -738,8 +739,8 @@ strong{color:#794040}
 		}));
 		var sendTimeCN = getSendTimeCN($dom.find('.send_time').text().split(' ')[0]);
 		
-		
-		$dom.append($('<p>').html( jokes[Math.round(Math.random() * (jokes.length-1) )] ));
+		$dom.append($('<p>').append(sys_remark));
+		//$dom.append($('<p>').html( jokes[Math.round(Math.random() * (jokes.length-1) )] ));
 		$dom.append($('<div>').css({
 			position:'absolute',
 			right:20,
