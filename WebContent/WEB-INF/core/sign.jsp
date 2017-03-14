@@ -96,15 +96,15 @@ color:#888;
 			<div class="form-group">
 				<select class="form-control input-sm" name="express" id="express">
 					<option value="-1">选择快递公司(可先粘贴短信让系统识别)</option>
-					<option exp1="圆通" exp2="中门">圆通 - 中门</option>
-					<option exp1="圆通" exp2="香江">圆通 - 香江</option>
+					<%--<option exp1="圆通" exp2="中门">圆通 - 中门</option>
+					<option exp1="圆通" exp2="香江">圆通 - 香江</option>--%>
 					<option exp1="申通" value="申通">校内申通</option>
 					<option exp1="韵达" exp2="中门">韵达 - 中门</option>
 					<option exp1="图书馆" exp2="菜鸟驿站">图书馆对面菜鸟驿站</option>
 					<option exp1="百世快递">百世快递</option>
-					<option value="快递超市" exp1="快递超市">快递超市(中通等)</option>
+					<%--<option value="快递超市" exp1="快递超市">快递超市(中通等)</option>--%>
 					<option value="其它公司" exp1="其它">其它公司(中午件等)</option>
-					<option exp1="天天">天天</option>
+					<%--<option exp1="天天">天天</option>--%>
 					<option exp1="顺丰" exp2="京江">顺丰 - 京江</option>
 					<option exp1="顺丰" exp2="香江">顺丰 - 香江</option>
 					<option exp1="EMS">EMS</option>
