@@ -61,7 +61,7 @@ public class LoginUtil {
 	public static User getLoginUser(UserService userService,HttpServletRequest request){
 		User sesUser = (User) WebUtils.getSessionAttribute(request, "me");
 		
-		if(null == sesUser) {
+		/*if(null == sesUser) {
 			return new User(){
 				{
 					setPhone("111");
@@ -69,7 +69,7 @@ public class LoginUtil {
 					setPoint(0);
 				}
 			};
-		}
+		}*/
 		
 		return sesUser;
 	}
